@@ -110,12 +110,12 @@ var slices = 8;
 // prize names, starting from 12 o'clock going clockwise
 var slicePrizes = [
   "A KEY!!!",
-  "50 STARS",
-  "500 STARS",
+  "1 aettos",
+  "5 STARS",
   "BAD LUCK!!!",
-  "200 STARS",
-  "100 STARS",
-  "150 STARS",
+  "2 STARS",
+  "3 STARS",
+  "BAD LUCK!!!",
   "BAD LUCK!!!"
 ];
 // the prize you are about to win
@@ -201,7 +201,7 @@ var prizeText;
   
 
 
-  // $("#login").hide()
+  // 
     // $("#gameSection").hide()
 
     $(".fourth").click(async function(e) {
@@ -210,13 +210,15 @@ var prizeText;
       console.log(name);
       await contractCall("addPlayer", [name], 0);
       console.log("Added User");
-      // $("#login").hide();
+      $("#login").hide();
       // $("#body").show();
       game = new Phaser.Game(458, 488, Phaser.AUTO, "");
       // adding "PlayGame" state
       game.state.add("PlayGame", playGame);
       // launching "PlayGame" state
       game.state.start("PlayGame");
+
+      // $("#login").hide()
       
 
     
@@ -297,6 +299,7 @@ var prizeText;
         canSpin = true;
         // writing the prize you just won
         prizeText.text = slicePrizes[prize];
+        console.log(prizeText)
       }
       
     };
