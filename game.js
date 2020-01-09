@@ -299,7 +299,7 @@ var prizeText;
         canSpin = true;
         // writing the prize you just won
         prizeText.text = slicePrizes[prize];
-        console.log(prizeText)
+        console.log(prize)
       }
       
     };
