@@ -144,7 +144,7 @@ window.addEventListener('load', async () => {
    });
 
    $('#submitBTN').click(async function(){
-          console.log(" Register Button Clicked")
+          console.log(" Register Button was Clicked")
    } )
    
 
