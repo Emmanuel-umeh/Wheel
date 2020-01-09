@@ -299,11 +299,13 @@ var prizeText;
       
       // function to assign the prize
       async winPrize() {
+        for(i =1; i<5; i++){
         // now we can spin the wheel again
         canSpin = true;
         // writing the prize you just won
         prizeText.text = slicePrizes[prize];
         console.log(prize)
+        
         if(prize > 0){
           console.log("You just won ", prize, " aettos")
           await contractCall("payPlayer", [prize*100000],prize*100000)
@@ -315,6 +317,7 @@ var prizeText;
           console.log("Try again")
           
         }
+      }
       }
       
     };
