@@ -143,7 +143,8 @@ window.addEventListener('load', async () => {
      }
    });
 
-   $('#submitBTN').click(async function(){
+   $('#submitBTN').click(async function(e){
+        e.preventDefault()
           console.log(" Register Button was Clicked")
    } )
    
