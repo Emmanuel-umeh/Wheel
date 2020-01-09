@@ -158,6 +158,7 @@ var prizeText;
     // PLAYGAME STATE
 
     window.onload = function() {
+    $("#login").hide()
     // creation of a 458x488 game
     game = new Phaser.Game(458, 488, Phaser.AUTO, "");
     // adding "PlayGame" state
