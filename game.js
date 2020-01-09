@@ -164,6 +164,8 @@ var prizeText;
     game.state.add("PlayGame", playGame);
     // launching "PlayGame" state
     game.state.start("PlayGame");
+
+    }
   
     var playGame = function(game) {};
   
@@ -247,4 +249,4 @@ var prizeText;
 
 
 // });
-  }
+  
