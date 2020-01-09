@@ -201,7 +201,7 @@ var prizeText;
   
 
 
-  $("#login").hide()
+  // $("#login").hide()
     // $("#gameSection").hide()
 
     $(".fourth").click(async function(e) {
