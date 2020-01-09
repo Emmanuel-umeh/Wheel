@@ -298,7 +298,7 @@ var prizeText;
 
       
       // function to assign the prize
-      winPrize() {
+      async winPrize() {
         // now we can spin the wheel again
         canSpin = true;
         // writing the prize you just won
