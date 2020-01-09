@@ -116,6 +116,9 @@ var prize;
 var prizeText;
 
 window.onload = function() {	
+     $('#body').hide()
+     $('#login').show()
+     
      // creation of a 458x488 game
 	game = new Phaser.Game(458, 488, Phaser.AUTO, "");
      // adding "PlayGame" state
