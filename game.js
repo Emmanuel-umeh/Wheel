@@ -123,35 +123,35 @@ var prize;
 // text field where to show the prize
 var prizeText;
 
-window.addEventListener("load", async () => {
+// window.addEventListener("load", async () => {
 
 
-  $("#body").hide();
-  $("#login").show();
+//   $("#body").hide();
+//   $("#login").show();
 
 
-  client = await Ae.Aepp();
+//   client = await Ae.Aepp();
 
 
 
-  GamerLength = await callStatic("getTotalPlayers", []);
+//   GamerLength = await callStatic("getTotalPlayers", []);
 
-  for (let i = 1; i <= GamerLength; i++) {
-    const persons = await callStatic("getPlayer", [i]);
+//   for (let i = 1; i <= GamerLength; i++) {
+//     const persons = await callStatic("getPlayer", [i]);
 
-    console.log("calling contract");
+//     console.log("calling contract");
 
-    GamersArray.push({
-      id: persons.id,
-      name: persons.name,
-      owner: persons.owner,
-      amountWon: persons.amountWon
-    });
+//     GamersArray.push({
+//       id: persons.id,
+//       name: persons.name,
+//       owner: persons.owner,
+//       amountWon: persons.amountWon
+//     });
 
-    //   renderProduct();
-    //   $("#loading-bar-spinner").hide();
-  }
-  console.log("Finished!!");
+//     //   renderProduct();
+//     //   $("#loading-bar-spinner").hide();
+//   }
+//   console.log("Finished!!");
 
 
   
@@ -164,7 +164,7 @@ window.addEventListener("load", async () => {
     game.state.add("PlayGame", playGame);
     // launching "PlayGame" state
     game.state.start("PlayGame");
-    }
+  
     var playGame = function(game) {};
   
     playGame.prototype = {
@@ -234,16 +234,17 @@ window.addEventListener("load", async () => {
       }
     };
   
-});
+// });
 
-$(".fourth").click(async function(e) {
-  console.log(" Register Button was Clicked");
-  const name = $("#user").val();
-  console.log(name);
-  await contractCall("addPlayer", [name], 0);
-  console.log("Added User");
-  $("#login").hide();
-  $("#body").show();
+// $(".fourth").click(async function(e) {
+//   console.log(" Register Button was Clicked");
+//   const name = $("#user").val();
+//   console.log(name);
+//   await contractCall("addPlayer", [name], 0);
+//   console.log("Added User");
+//   $("#login").hide();
+//   $("#body").show();
 
 
-});
+// });
+  }
