@@ -159,8 +159,7 @@ var prizeText;
 
     window.onload = function() {
     
-      $("#login").show()
-    $("#gameSection").hide()
+      
 
     // creation of a 458x488 game
     game = new Phaser.Game(458, 488, Phaser.AUTO, "");
@@ -173,6 +172,8 @@ var prizeText;
     }
   
     var playGame = function(game) {};
+    $("#login").show()
+    $("#gameSection").hide()
   
     playGame.prototype = {
       // function to be executed once the state preloads
@@ -204,6 +205,7 @@ var prizeText;
         // waiting for your input, then calling "spin" function
         game.input.onDown.add(this.spin, this);
       },
+      
       // function to spin the wheel
       spin() {
         // can we spin the wheel?
@@ -232,6 +234,8 @@ var prizeText;
           spinTween.onComplete.add(this.winPrize, this);
         }
       },
+
+      
       // function to assign the prize
       winPrize() {
         // now we can spin the wheel again
@@ -239,6 +243,7 @@ var prizeText;
         // writing the prize you just won
         prizeText.text = slicePrizes[prize];
       }
+      
     };
   
 // });
