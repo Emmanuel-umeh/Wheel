@@ -47,30 +47,23 @@ payable contract Wheel =
         put(state{ players = updatedDetails })
     `;
 
-
-const contractAddress = 'ct_23ut2ZQ67nUis6otUqcBvmLhWmfuFTUgaAWz6d6nGUQ58979oq';
+const contractAddress = "ct_23ut2ZQ67nUis6otUqcBvmLhWmfuFTUgaAWz6d6nGUQ58979oq";
 var GamersArray = [];
 var client = null;
 var GameLength = 0;
 
-
-
 function renderGamers() {
-     GamersArray = GamersArray.sort(function (a, b) {
-    return b.amountWon - a.amountWon
-  })
-  var template = $('#template').html();
+  GamersArray = GamersArray.sort(function(a, b) {
+    return b.amountWon - a.amountWon;
+  });
+  var template = $("#template").html();
 
   Mustache.parse(template);
   var rendered = Mustache.render(template, {
-     GamersArray
+    GamersArray
   });
 
-
-
-
-  $('#gamers').html(rendered);
-  
+  $("#gamers").html(rendered);
 }
 //Create a asynchronous read call for our smart contract
 async function callStatic(func, args) {
@@ -78,13 +71,15 @@ async function callStatic(func, args) {
   const contract = await client.getContractInstance(contractSource, {
     contractAddress
   });
-  
-  const calledGet = await contract.call(func, args, {
-    callStatic: true
-  }).catch(e => console.error(e));
- 
+
+  const calledGet = await contract
+    .call(func, args, {
+      callStatic: true
+    })
+    .catch(e => console.error(e));
+
   const decodedGet = await calledGet.decode().catch(e => console.error(e));
-  console.log("number of posts : ", decodedGet)
+  console.log("number of posts : ", decodedGet);
   return decodedGet;
 }
 
@@ -93,140 +88,153 @@ async function contractCall(func, args, value) {
     contractAddress
   });
   //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract.call(func, args, {
-    amount: value
-  }).catch(e => console.error(e));
+  const calledSet = await contract
+    .call(func, args, {
+      amount: value
+    })
+    .catch(e => console.error(e));
 
   return calledSet;
+}
+
+function loadGame() {
+  // PLAYGAME STATE
+
+  // creation of a 458x488 game
+  game = new Phaser.Game(458, 488, Phaser.AUTO, "");
+  // adding "PlayGame" state
+  game.state.add("PlayGame", playGame);
+  // launching "PlayGame" state
+  game.state.start("PlayGame");
+
+  var playGame = function(game) {};
+
+  playGame.prototype = {
+    // function to be executed once the state preloads
+    preload: function() {
+      // preloading graphic assets
+      game.load.image("wheel", "wheel.png");
+      game.load.image("pin", "pin.png");
+    },
+    // funtion to be executed when the state is created
+    create: function() {
+      // giving some color to background
+      game.stage.backgroundColor = "#880044";
+      // adding the wheel in the middle of the canvas
+      wheel = game.add.sprite(game.width / 2, game.width / 2, "wheel");
+      // setting wheel registration point in its center
+      wheel.anchor.set(0.5);
+      // adding the pin in the middle of the canvas
+      var pin = game.add.sprite(game.width / 2, game.width / 2, "pin");
+      // setting pin registration point in its center
+      pin.anchor.set(0.5);
+      // adding the text field
+      prizeText = game.add.text(game.world.centerX, 480, "");
+      // setting text field registration point in its center
+      prizeText.anchor.set(0.5);
+      // aligning the text to center
+      prizeText.align = "center";
+      // the game has just started = we can spin the wheel
+      canSpin = true;
+      // waiting for your input, then calling "spin" function
+      game.input.onDown.add(this.spin, this);
+    },
+    // function to spin the wheel
+    spin() {
+      // can we spin the wheel?
+      if (canSpin) {
+        // resetting text field
+        prizeText.text = "";
+        // the wheel will spin round from 2 to 4 times. This is just coreography
+        var rounds = game.rnd.between(2, 4);
+        // then will rotate by a random number from 0 to 360 degrees. This is the actual spin
+        var degrees = game.rnd.between(0, 360);
+        // before the wheel ends spinning, we already know the prize according to "degrees" rotation and the number of slices
+        prize = slices - 1 - Math.floor(degrees / (360 / slices));
+        // now the wheel cannot spin because it's already spinning
+        canSpin = false;
+        // animation tweeen for the spin: duration 3s, will rotate by (360 * rounds + degrees) degrees
+        // the quadratic easing will simulate friction
+        var spinTween = game.add.tween(wheel).to(
+          {
+            angle: 360 * rounds + degrees
+          },
+          3000,
+          Phaser.Easing.Quadratic.Out,
+          true
+        );
+        // once the tween is completed, call winPrize function
+        spinTween.onComplete.add(this.winPrize, this);
+      }
+    },
+    // function to assign the prize
+    winPrize() {
+      // now we can spin the wheel again
+      canSpin = true;
+      // writing the prize you just won
+      prizeText.text = slicePrizes[prize];
+    }
+  };
 }
 
 // the game itself
 var game;
 // the spinning wheel
-var wheel; 
+var wheel;
 // can the wheel spin?
 var canSpin;
 // slices (prizes) placed in the wheel
 var slices = 8;
 // prize names, starting from 12 o'clock going clockwise
-var slicePrizes = ["A KEY!!!", "50 STARS", "500 STARS", "BAD LUCK!!!", "200 STARS", "100 STARS", "150 STARS", "BAD LUCK!!!"];
+var slicePrizes = [
+  "A KEY!!!",
+  "50 STARS",
+  "500 STARS",
+  "BAD LUCK!!!",
+  "200 STARS",
+  "100 STARS",
+  "150 STARS",
+  "BAD LUCK!!!"
+];
 // the prize you are about to win
 var prize;
 // text field where to show the prize
 var prizeText;
 
+window.addEventListener("load", async () => {
+  $("#body").hide();
+  $("#login").show();
 
+  client = await Ae.Aepp();
 
-window.addEventListener('load', async () => {
-     $('#body').hide()
-     $('#login').show();
-   
-     client = await Ae.Aepp()
-   
-     GamerLength = await callStatic('getTotalPlayers', []);
-   
-   
-     for (let i = 1; i <= GamerLength; i++) {
-       const persons = await callStatic('getPlayer', [i]);
-   
-       console.log("calling contract")
-   
-       GamersArray.push({
-         id: persons.id,
-         name: persons.name,
-         owner: persons.owner,
-         amountWon: persons.amountWon
-       })
-   
-     //   renderProduct();
-     //   $("#loading-bar-spinner").hide();
-     }
-     console.log("Finished!!")
-   });
+  GamerLength = await callStatic("getTotalPlayers", []);
 
-   $('.fourth').click(async function(e){
-          console.log(" Register Button was Clicked")
-          const name = $('#user').val()
-          console.log(name)
-          await contractCall('addPlayer', [name], 0)
-          console.log("Added User")
-          $('#login').hide();
-          $('#body').show()
-    
-          // PLAYGAME STATE
+  for (let i = 1; i <= GamerLength; i++) {
+    const persons = await callStatic("getPlayer", [i]);
 
+    console.log("calling contract");
 
- 
-     // creation of a 458x488 game
-	game = new Phaser.Game(458, 488, Phaser.AUTO, "");
-     // adding "PlayGame" state
-     game.state.add("PlayGame",playGame);
-     // launching "PlayGame" state
-     game.state.start("PlayGame");
-	
-var playGame = function(game){};
+    GamersArray.push({
+      id: persons.id,
+      name: persons.name,
+      owner: persons.owner,
+      amountWon: persons.amountWon
+    });
 
-playGame.prototype = {
-     // function to be executed once the state preloads
-     preload: function(){
-          // preloading graphic assets
-          game.load.image("wheel", "wheel.png");
-		game.load.image("pin", "pin.png");     
-     },
-     // funtion to be executed when the state is created
-  	create: function(){
-          // giving some color to background
-  		game.stage.backgroundColor = "#880044";
-          // adding the wheel in the middle of the canvas
-  		wheel = game.add.sprite(game.width / 2, game.width / 2, "wheel");
-          // setting wheel registration point in its center
-          wheel.anchor.set(0.5);
-          // adding the pin in the middle of the canvas
-          var pin = game.add.sprite(game.width / 2, game.width / 2, "pin");
-          // setting pin registration point in its center
-          pin.anchor.set(0.5);
-          // adding the text field
-          prizeText = game.add.text(game.world.centerX, 480, "");
-          // setting text field registration point in its center
-          prizeText.anchor.set(0.5);
-          // aligning the text to center
-          prizeText.align = "center";
-          // the game has just started = we can spin the wheel
-          canSpin = true;
-          // waiting for your input, then calling "spin" function
-          game.input.onDown.add(this.spin, this);		
-	},
-     // function to spin the wheel
-     spin(){
-          // can we spin the wheel?
-          if(canSpin){  
-               // resetting text field
-               prizeText.text = "";
-               // the wheel will spin round from 2 to 4 times. This is just coreography
-               var rounds = game.rnd.between(2, 4);
-               // then will rotate by a random number from 0 to 360 degrees. This is the actual spin
-               var degrees = game.rnd.between(0, 360);
-               // before the wheel ends spinning, we already know the prize according to "degrees" rotation and the number of slices
-               prize = slices - 1 - Math.floor(degrees / (360 / slices));
-               // now the wheel cannot spin because it's already spinning
-               canSpin = false;
-               // animation tweeen for the spin: duration 3s, will rotate by (360 * rounds + degrees) degrees
-               // the quadratic easing will simulate friction
-               var spinTween = game.add.tween(wheel).to({
-                    angle: 360 * rounds + degrees
-               }, 3000, Phaser.Easing.Quadratic.Out, true);
-               // once the tween is completed, call winPrize function
-               spinTween.onComplete.add(this.winPrize, this);
-          }
-     },
-     // function to assign the prize
-     winPrize(){
-          // now we can spin the wheel again
-          canSpin = true;
-          // writing the prize you just won
-          prizeText.text = slicePrizes[prize];
-     }
-}
-   } )
-   
+    //   renderProduct();
+    //   $("#loading-bar-spinner").hide();
+  }
+  console.log("Finished!!");
+});
 
+$(".fourth").click(async function(e) {
+  console.log(" Register Button was Clicked");
+  const name = $("#user").val();
+  console.log(name);
+  await contractCall("addPlayer", [name], 0);
+  console.log("Added User");
+  $("#login").hide();
+  $("#body").show();
+
+  loadGame()
+});
