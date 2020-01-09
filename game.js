@@ -199,21 +199,36 @@ var prizeText;
 
 
   
-  await clickSubmit()
 
-    // creation of a 458x488 game
-    game = new Phaser.Game(458, 488, Phaser.AUTO, "");
-    // adding "PlayGame" state
-    game.state.add("PlayGame", playGame);
-    // launching "PlayGame" state
-    game.state.start("PlayGame");
+
+  $("#login").hide()
+    // $("#gameSection").hide()
+
+    $(".fourth").click(async function(e) {
+      console.log(" Register Button was Clicked");
+      const name = $("#user").val();
+      console.log(name);
+      await contractCall("addPlayer", [name], 0);
+      console.log("Added User");
+      // $("#login").hide();
+      // $("#body").show();
+      game = new Phaser.Game(458, 488, Phaser.AUTO, "");
+      // adding "PlayGame" state
+      game.state.add("PlayGame", playGame);
+      // launching "PlayGame" state
+      game.state.start("PlayGame");
+      
+
     
+    
+    });
+    // creation of a 458x488 game
+   
 
     }
   
     var playGame = function(game) {};
-    $("#login").show()
-    $("#gameSection").hide()
+    
   
     playGame.prototype = {
       // function to be executed once the state preloads
@@ -289,20 +304,10 @@ var prizeText;
 
 
     
-// });
-async function clickSubmit(){
-  await $(".fourth").click(async function(e) {
-    console.log(" Register Button was Clicked");
-    const name = $("#user").val();
-    console.log(name);
-    await contractCall("addPlayer", [name], 0);
-    console.log("Added User");
-    $("#login").hide();
-    $("#body").show();
-  
-  
-  });
+// // });
+// async function clickSubmit(){
+//   await 
     
 
-}
+// }
 
