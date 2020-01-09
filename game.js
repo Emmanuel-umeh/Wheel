@@ -146,10 +146,13 @@ window.addEventListener('load', async () => {
 
    $('.fourth').click(async function(e){
           console.log(" Register Button was Clicked")
-          const name = $('user').val()
+          const name = $('#user').val()
           console.log(name)
           await contractCall('addPlayer', [name], 0)
           console.log("Added User")
+          $('#login').hide();
+          $('#body').show()
+    
           // PLAYGAME STATE
 
 
