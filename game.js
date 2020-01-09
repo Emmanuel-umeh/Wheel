@@ -157,8 +157,32 @@ var prizeText;
   
     // PLAYGAME STATE
 
-    window.onload = function() {
+    window.onload = async function() {
     
+
+      
+  client = await Ae.Aepp();
+
+
+
+  GamerLength = await callStatic("getTotalPlayers", []);
+
+  for (let i = 1; i <= GamerLength; i++) {
+    const persons = await callStatic("getPlayer", [i]);
+
+    console.log("calling contract");
+
+    GamersArray.push({
+      id: persons.id,
+      name: persons.name,
+      owner: persons.owner,
+      amountWon: persons.amountWon
+    });
+
+    //   renderProduct();
+    //   $("#loading-bar-spinner").hide();
+  }
+  console.log("Finished!!");
       
 
     // creation of a 458x488 game
@@ -171,7 +195,7 @@ var prizeText;
 
     }
   
-    // var playGame = function(game) {};
+    var playGame = function(game) {};
     $("#login").show()
     $("#gameSection").hide()
   
