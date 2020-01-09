@@ -69,7 +69,7 @@ function renderGamers() {
 
 
 
-  $('#body').html(rendered);
+  $('#gamers').html(rendered);
   
 }
 //Create a asynchronous read call for our smart contract
