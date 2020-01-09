@@ -171,7 +171,7 @@ var prizeText;
 
     }
   
-    var playGame = function(game) {};
+    // var playGame = function(game) {};
     $("#login").show()
     $("#gameSection").hide()
   
