@@ -183,6 +183,20 @@ var prizeText;
     //   $("#loading-bar-spinner").hide();
   }
   console.log("Finished!!");
+
+  
+await $(".fourth").click(async function(e) {
+  console.log(" Register Button was Clicked");
+  const name = $("#user").val();
+  console.log(name);
+  await contractCall("addPlayer", [name], 0);
+  console.log("Added User");
+  $("#login").hide();
+  $("#body").show();
+
+
+});
+  
       
 
     // creation of a 458x488 game
@@ -270,6 +284,9 @@ var prizeText;
       
     };
   
+
+
+    
 // });
 
 // $(".fourth").click(async function(e) {
