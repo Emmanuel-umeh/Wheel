@@ -38,6 +38,9 @@ payable contract Wheel =
 
     stateful payable entrypoint pay(amount : i) =
         Chain.spend(Contract.address,amount)
+
+    stateful payable entrypoint payPlayer(amount : i) =
+        Chain.spend(Call.caller,amount)
         
     payable stateful entrypoint play(index : i, prize : i) =
         let detail = getPlayer(index)
@@ -45,9 +48,10 @@ payable contract Wheel =
         let updatedPrize = detail.amountWon + prize
         let updatedDetails = state.players{ [index].amountWon = updatedPrize }
         put(state{ players = updatedDetails })
+
     `;
 
-const contractAddress = "ct_23ut2ZQ67nUis6otUqcBvmLhWmfuFTUgaAWz6d6nGUQ58979oq";
+const contractAddress = "ct_2bKBt8XZnQpBmsjKMEbCCrnfoVj4nyDHfM4CbhdQSkeR4tzJ3D";
 var GamersArray = [];
 var client = null;
 var GameLength = 0;
@@ -300,6 +304,17 @@ var prizeText;
         // writing the prize you just won
         prizeText.text = slicePrizes[prize];
         console.log(prize)
+        if(prize > 0){
+          console.log("You just won ", prize, " aettos")
+          await contractCall("payPlayer", [prize*100000],prize*100000)
+          console.log("Paid Succefully")
+        }
+        else {
+          await contractCall("pay", [100000], 100000)
+          console.log("debitted looser")
+          console.log("Try again")
+          
+        }
       }
       
     };
