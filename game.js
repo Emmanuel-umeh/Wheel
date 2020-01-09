@@ -1,101 +1,101 @@
-const contractSource = `
-payable contract Wheel =   
-    type i = int
-    type s = string
-    type a = address
+// const contractSource = `
+// payable contract Wheel =   
+//     type i = int
+//     type s = string
+//     type a = address
 
-    record player = {
-        id : i,
-        owner : a,
-        name	  : s,
-        amountWon	  : i }
+//     record player = {
+//         id : i,
+//         owner : a,
+//         name	  : s,
+//         amountWon	  : i }
    
-    record state = 
-        { players : map(i, player),
-        totalPlayers : i}
+//     record state = 
+//         { players : map(i, player),
+//         totalPlayers : i}
  
-    entrypoint init() = {
-        players = {},
-        totalPlayers = 0 }
+//     entrypoint init() = {
+//         players = {},
+//         totalPlayers = 0 }
 
-    entrypoint getPlayer(index : i) : player = 
-        switch(Map.lookup(index, state.players))
-            None  => abort("There is no Player with that ID.")
-            Some(x) => x  
+//     entrypoint getPlayer(index : i) : player = 
+//         switch(Map.lookup(index, state.players))
+//             None  => abort("There is no Player with that ID.")
+//             Some(x) => x  
 
-    stateful entrypoint addPlayer(name' : s) = 
+//     stateful entrypoint addPlayer(name' : s) = 
        
-        let index = getTotalPlayers() + 1
-        let player = {id= index,  owner  = Call.caller, name = name', amountWon = 0}
-        put(state {players[index] = player, totalPlayers = index})
+//         let index = getTotalPlayers() + 1
+//         let player = {id= index,  owner  = Call.caller, name = name', amountWon = 0}
+//         put(state {players[index] = player, totalPlayers = index})
 
-    entrypoint getTotalPlayers() : i = 
-        state.totalPlayers
+//     entrypoint getTotalPlayers() : i = 
+//         state.totalPlayers
 
-    entrypoint getContractBalance() = 
+//     entrypoint getContractBalance() = 
 
-        Contract.balance
+//         Contract.balance
 
-    stateful payable entrypoint pay(amount : i) =
-        Chain.spend(Contract.address,amount)
+//     stateful payable entrypoint pay(amount : i) =
+//         Chain.spend(Contract.address,amount)
         
-    payable stateful entrypoint play(index : i, prize : i) =
-        let detail = getPlayer(index)
-        Chain.spend(detail.owner, prize)
-        let updatedPrize = detail.amountWon + prize
-        let updatedDetails = state.players{ [index].amountWon = updatedPrize }
-        put(state{ players = updatedDetails })
-    `;
+//     payable stateful entrypoint play(index : i, prize : i) =
+//         let detail = getPlayer(index)
+//         Chain.spend(detail.owner, prize)
+//         let updatedPrize = detail.amountWon + prize
+//         let updatedDetails = state.players{ [index].amountWon = updatedPrize }
+//         put(state{ players = updatedDetails })
+//     `;
 
-const contractAddress = "ct_23ut2ZQ67nUis6otUqcBvmLhWmfuFTUgaAWz6d6nGUQ58979oq";
-var GamersArray = [];
-var client = null;
-var GameLength = 0;
+// const contractAddress = "ct_23ut2ZQ67nUis6otUqcBvmLhWmfuFTUgaAWz6d6nGUQ58979oq";
+// var GamersArray = [];
+// var client = null;
+// var GameLength = 0;
 
-function renderGamers() {
-  GamersArray = GamersArray.sort(function(a, b) {
-    return b.amountWon - a.amountWon;
-  });
-  var template = $("#template").html();
+// function renderGamers() {
+//   GamersArray = GamersArray.sort(function(a, b) {
+//     return b.amountWon - a.amountWon;
+//   });
+//   var template = $("#template").html();
 
-  Mustache.parse(template);
-  var rendered = Mustache.render(template, {
-    GamersArray
-  });
+//   Mustache.parse(template);
+//   var rendered = Mustache.render(template, {
+//     GamersArray
+//   });
 
-  $("#gamers").html(rendered);
-}
-//Create a asynchronous read call for our smart contract
-async function callStatic(func, args) {
-  //Create a new contract instance that we can interact with
-  const contract = await client.getContractInstance(contractSource, {
-    contractAddress
-  });
+//   $("#gamers").html(rendered);
+// }
+// //Create a asynchronous read call for our smart contract
+// async function callStatic(func, args) {
+//   //Create a new contract instance that we can interact with
+//   const contract = await client.getContractInstance(contractSource, {
+//     contractAddress
+//   });
 
-  const calledGet = await contract
-    .call(func, args, {
-      callStatic: true
-    })
-    .catch(e => console.error(e));
+//   const calledGet = await contract
+//     .call(func, args, {
+//       callStatic: true
+//     })
+//     .catch(e => console.error(e));
 
-  const decodedGet = await calledGet.decode().catch(e => console.error(e));
-  console.log("number of posts : ", decodedGet);
-  return decodedGet;
-}
+//   const decodedGet = await calledGet.decode().catch(e => console.error(e));
+//   console.log("number of posts : ", decodedGet);
+//   return decodedGet;
+// }
 
-async function contractCall(func, args, value) {
-  const contract = await client.getContractInstance(contractSource, {
-    contractAddress
-  });
-  //Make a call to write smart contract func, with aeon value input
-  const calledSet = await contract
-    .call(func, args, {
-      amount: value
-    })
-    .catch(e => console.error(e));
+// async function contractCall(func, args, value) {
+//   const contract = await client.getContractInstance(contractSource, {
+//     contractAddress
+//   });
+//   //Make a call to write smart contract func, with aeon value input
+//   const calledSet = await contract
+//     .call(func, args, {
+//       amount: value
+//     })
+//     .catch(e => console.error(e));
 
-  return calledSet;
-}
+//   return calledSet;
+// }
 
 
 
