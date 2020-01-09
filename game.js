@@ -131,15 +131,15 @@ window.addEventListener('load', async () => {
    
        console.log("calling contract")
    
-       CandidateArray.push({
+       GamersArray.push({
          id: persons.id,
          name: persons.name,
          owner: persons.owner,
          amountWon: persons.amountWon
        })
    
-       renderProduct();
-       $("#loading-bar-spinner").hide();
+     //   renderProduct();
+     //   $("#loading-bar-spinner").hide();
      }
    });
 
