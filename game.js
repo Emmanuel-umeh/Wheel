@@ -162,6 +162,8 @@ var prizeText;
     // PLAYGAME STATE
 
     window.onload = async function() {
+
+      $('.loader').show()
     
 
       
@@ -187,6 +189,7 @@ var prizeText;
     //   $("#loading-bar-spinner").hide();
   }
   console.log("Finished!!");
+  $('.loader').hide()
 
   
 // await $(".fourth").click(async function(e) {
@@ -209,6 +212,7 @@ var prizeText;
     // $("#gameSection").hide()
 
     $(".fourth").click(async function(e) {
+      $('.loader').show()
       console.log(" Register Button was Clicked");
       const name = $("#user").val();
       console.log(name);
@@ -226,7 +230,7 @@ var prizeText;
       
 
     
-    
+      $('.loader').hide()
     });
     // creation of a 458x488 game
    
@@ -300,6 +304,7 @@ var prizeText;
       // function to assign the prize
       async winPrize() {
         for(i =1; i<5; i++){
+          
         // now we can spin the wheel again
         canSpin = true;
         // writing the prize you just won
@@ -307,14 +312,18 @@ var prizeText;
         console.log(prize)
         
         if(prize > 0){
+          $('.loader').show()
           console.log("You just won ", prize, " aettos")
           await contractCall("payPlayer", [prize*100000],prize*100000)
           console.log("Paid Succefully")
+          $('.loader').hide()
         }
         else {
+          $('.loader').show()
           await contractCall("pay", [100000], 100000)
           console.log("debitted looser")
           console.log("Try again")
+          $('.loader').hide()
           
         }
       }
