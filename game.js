@@ -98,16 +98,7 @@ async function contractCall(func, args, value) {
 }
 
 function loadGame() {
-  // PLAYGAME STATE
 
-  // creation of a 458x488 game
-  game = new Phaser.Game(458, 488, Phaser.AUTO, "");
-  // adding "PlayGame" state
-  game.state.add("PlayGame", playGame);
-  // launching "PlayGame" state
-  game.state.start("PlayGame");
-
-  var playGame = function(game) {};
 
   playGame.prototype = {
     // function to be executed once the state preloads
@@ -225,6 +216,17 @@ window.addEventListener("load", async () => {
     //   $("#loading-bar-spinner").hide();
   }
   console.log("Finished!!");
+
+    // PLAYGAME STATE
+
+  // creation of a 458x488 game
+  game = new Phaser.Game(458, 488, Phaser.AUTO, "");
+  // adding "PlayGame" state
+  game.state.add("PlayGame", playGame);
+  // launching "PlayGame" state
+  game.state.start("PlayGame");
+
+  var playGame = function(game) {};
 });
 
 $(".fourth").click(async function(e) {
