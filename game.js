@@ -97,8 +97,44 @@ async function contractCall(func, args, value) {
   return calledSet;
 }
 
-function loadGame() {
 
+// the game itself
+var game;
+// the spinning wheel
+var wheel;
+// can the wheel spin?
+var canSpin;
+// slices (prizes) placed in the wheel
+var slices = 8;
+// prize names, starting from 12 o'clock going clockwise
+var slicePrizes = [
+  "A KEY!!!",
+  "50 STARS",
+  "500 STARS",
+  "BAD LUCK!!!",
+  "200 STARS",
+  "100 STARS",
+  "150 STARS",
+  "BAD LUCK!!!"
+];
+// the prize you are about to win
+var prize;
+// text field where to show the prize
+var prizeText;
+
+
+
+function loadGame() {
+  // PLAYGAME STATE
+
+  // creation of a 458x488 game
+  game = new Phaser.Game(458, 488, Phaser.AUTO, "");
+  // adding "PlayGame" state
+  game.state.add("PlayGame", playGame);
+  // launching "PlayGame" state
+  game.state.start("PlayGame");
+
+  var playGame = function(game) {};
 
   playGame.prototype = {
     // function to be executed once the state preloads
@@ -168,30 +204,6 @@ function loadGame() {
   };
 }
 
-// the game itself
-var game;
-// the spinning wheel
-var wheel;
-// can the wheel spin?
-var canSpin;
-// slices (prizes) placed in the wheel
-var slices = 8;
-// prize names, starting from 12 o'clock going clockwise
-var slicePrizes = [
-  "A KEY!!!",
-  "50 STARS",
-  "500 STARS",
-  "BAD LUCK!!!",
-  "200 STARS",
-  "100 STARS",
-  "150 STARS",
-  "BAD LUCK!!!"
-];
-// the prize you are about to win
-var prize;
-// text field where to show the prize
-var prizeText;
-
 window.addEventListener("load", async () => {
   $("#body").hide();
   $("#login").show();
@@ -216,17 +228,6 @@ window.addEventListener("load", async () => {
     //   $("#loading-bar-spinner").hide();
   }
   console.log("Finished!!");
-
-    // PLAYGAME STATE
-
-  // creation of a 458x488 game
-  game = new Phaser.Game(458, 488, Phaser.AUTO, "");
-  // adding "PlayGame" state
-  game.state.add("PlayGame", playGame);
-  // launching "PlayGame" state
-  game.state.start("PlayGame");
-
-  var playGame = function(game) {};
 });
 
 $(".fourth").click(async function(e) {
@@ -238,5 +239,5 @@ $(".fourth").click(async function(e) {
   $("#login").hide();
   $("#body").show();
 
-  loadGame()
+  await loadGame()
 });
