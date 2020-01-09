@@ -144,7 +144,7 @@ window.addEventListener('load', async () => {
      console.log("Finished!!")
    });
 
-   $("#login").on("click", ".fourth", async function (event) {
+   $('.fourth').click(async function(e){
           console.log(" Register Button was Clicked")
           const name = $('user').val()
           console.log(name)
